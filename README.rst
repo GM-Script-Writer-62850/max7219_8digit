@@ -17,9 +17,8 @@ Manual for `write_digits`:
 Manual for `r_write_digits`:
   This has a performance hit! See source code for more info
   `write_digits` but in reverse order
-  This takes 3 parameters, the 1st is the value to set
+  This takes 2 parameters, the 1st is the value to set
   The second is the start position (defaults to 0)
-  The third is the total digits on the panel (defaults to 7)
 
 
 Manual for `write_digits_from_array`:
@@ -33,12 +32,14 @@ Manual for `write_digits_from_array`:
 
 Manual for `r_write_digits_from_array`:
   `write_digits_from_array` but in reverse order
-  This takes 3 parameters, the 1st is the value to set
+  This takes 2 parameters, the 1st is the value to set
   The second is the start position (defaults to 0)
-  The third is the total digits on the panel (defaults to 7)
 
 In Theory using a last digit value of 15 would start at the end of the second
 MAX7219 connected to the DOUT pin of the 1st MAX7219
+
+I have not test using daisy chained MAX7219, but I think all you will need to do is set the scan_limit higher `max7219.Display(spi, ss, scan_limit=15)` or `max7219.set_scan_limit(15)` then it should just work... i hope
+
 
 Example of use:
 
