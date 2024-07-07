@@ -1,6 +1,6 @@
 
-This is a very simple clock demostration for the MAX7219 + 8 x 7 digit board
-on an ESP8266 with micropython.
+This is a very simple clock demonstration for the MAX7219 + 8 x 7 digit board
+on an PICO with micropython.
 
 To use:
 
@@ -9,3 +9,9 @@ To use:
    import simple_clock
    simple_clock.start()
 
+This is debug script to check if the display is behaving as expected
+
+.. code:: python
+
+   import debug_max7219
+   debug_max7219.start()
