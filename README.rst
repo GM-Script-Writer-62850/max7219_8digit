@@ -22,7 +22,7 @@ Manual for ``r_write_digits``:
   The second is the start position (defaults to 0)
 
 
-Manual for `write_digits_from_array`:
+Manual for ``write_digits_from_array``:
   This takes 3 parameters, the 1st is the value to set and the second
   is the last digit you want to update, counting from 0.
   This defaults to 7, the last digit using on the pin out of the MAX7219.
