@@ -1,22 +1,23 @@
 
 This is a micropython library for MAX7219 IC.
 Note that some boards using this have the numbers wired in reverse,
-this library follows the order of the pinout as defined in the data sheet
-of the [MAX7219](https://www.analog.com/media/en/technical-documentation/data-sheets/MAX7219-MAX7221.pdf)
+this library follows the order of the pinout as defined in the datasheet
+of the `MAX7219 <https://www.analog.com/media/en/technical-documentation/data-sheets/MAX7219-MAX7221.pdf>`_, 
+however functions are provided to reverse the order if needed.
 
 I have tested it with a PICO, running micropython version 1.20.0.
 
 Requires a minimum of three spare GPIO lines to run SPI.
 
-Manual for `write_digits`:
+Manual for ``write_digits``:
   This takes 2 parameters, the 1st is the value to set and the second
   is the last digit's position you want to update, counting from 0.
   This defaults to 7, the last digit using on the pin out of the MAX7219.
   This function accepts the 1st parameter as a string or number
 
-Manual for `r_write_digits`:
-  This has a performance hit! See source code for more info
-  `write_digits` but in reverse order
+Manual for ``r_write_digits``:
+  This has a perf`ormance hit! See source code for more info
+  ``write_digits`` but in reverse order
   This takes 2 parameters, the 1st is the value to set
   The second is the start position (defaults to 0)
 
@@ -30,15 +31,15 @@ Manual for `write_digits_from_array`:
   Using 0-9 in the array will set the digit to the number given.
   Using a 10-19 will apply a decimal point to the second digit (10='0.')
 
-Manual for `r_write_digits_from_array`:
-  `write_digits_from_array` but in reverse order
+Manual for ``r_write_digits_from_array``:
+  ``write_digits_from_array`` but in reverse order
   This takes 2 parameters, the 1st is the value to set
   The second is the start position (defaults to 0)
 
 In Theory using a last digit value of 15 would start at the end of the second
 MAX7219 connected to the DOUT pin of the 1st MAX7219
 
-I have not test using daisy chained MAX7219, but I think all you will need to do is set the scan_limit higher `max7219.Display(spi, ss, scan_limit=15)` or `max7219.set_scan_limit(15)` then it should just work... i hope
+I have not tested using daisy chained MAX7219, but I think all you will need to do is set the scan_limit higher ``max7219.Display(spi, ss, scan_limit=15)`` or ``max7219.set_scan_limit(15)`` then it should just work... I hope
 
 
 Example of use:
@@ -52,7 +53,7 @@ Example of use:
    
    from machine import Pin, SPI
    from time import sleep
-   import max7219_8digit
+   import max7219
    
    spi = SPI(0, baudrate=10000000, polarity=1, phase=0, sck=Pin(2), mosi=Pin(3))
    ss = Pin(5, Pin.OUT)
