@@ -17,8 +17,8 @@ Manual for ``write_digits``:
 
 Manual for ``r_write_digits``:
   This has a perf`ormance hit! See source code for more info
-  ``write_digits`` but in reverse order
-  This takes 2 parameters, the 1st is the value to set
+  ``write_digits`` but in reverse order.
+  This takes 2 parameters, the 1st is the value to set.
   The second is the start position (defaults to 0)
 
 
@@ -32,8 +32,8 @@ Manual for `write_digits_from_array`:
   Using a 10-19 will apply a decimal point to the second digit (10='0.')
 
 Manual for ``r_write_digits_from_array``:
-  ``write_digits_from_array`` but in reverse order
-  This takes 2 parameters, the 1st is the value to set
+  ``write_digits_from_array`` but in reverse order.
+  This takes 2 parameters, the 1st is the value to set.
   The second is the start position (defaults to 0)
 
 In Theory using a last digit value of 15 would start at the end of the second
