@@ -15,34 +15,38 @@ Manual for ``write_digits``:
   This defaults to 7, the last digit using on the pin out of the MAX7219.
   This function accepts the 1st parameter as a string or number
 
-Manual for ``r_write_digits``:
-  This has a perf`ormance hit! See source code for more info
-  ``write_digits`` but in reverse order.
-  This takes 2 parameters, the 1st is the value to set.
-  The second is the start position (defaults to 0)
-
-
-Manual for ``write_digits_from_array``:
-  This takes 3 parameters, the 1st is the value to set and the second
+Manual for ``write_digits_from_list``:
+  This function is exclusively for setting numbers as fast as possible.
+  This takes 2 parameters, the 1st is the value to set and the second
   is the last digit you want to update, counting from 0.
   This defaults to 7, the last digit using on the pin out of the MAX7219.
-  This function accepts the 1st parameter as an array.
-  This function is exclusively for setting numbers as fast as possible.
+  This function accepts the 1st parameter as a list.
   Using 0-9 in the array will set the digit to the number given.
   Using a 10-19 will apply a decimal point to the second digit (10='0.')
 
-Manual for ``r_write_digits_from_array``:
-  ``write_digits_from_array`` but in reverse order.
-  This takes 2 parameters, the 1st is the value to set.
+Manual for ``write_digits_reverse``:
+  This takes 2 parameters, the 1st is the value to set, this
+  can be a number, string, or list.
   The second is the start position (defaults to 0)
+  This has a performance hit when the data type is not a list!
+  See source code for more info.
+
+Manual for ``write_all_digits``:
+  This takes 2 parameters, the 1st is the value to set (number, string, or list)
+  and the second is a boolean indicting if the order needs to be reversed,
+  defaults to False. This will pad values to the left with 0 for a list or space
+  otherwise. For example with a list of ``[13,1,4]`` would become ``[0,0,0,0,0,13,1,4]``
+  and a string ``12345`` would become ``   12345``, this is decimal point safe.
 
 In Theory using a last digit value of 15 would start at the end of the second
 MAX7219 connected to the DOUT pin of the 1st MAX7219
 
-I have not tested using daisy chained MAX7219, but I think all you will need to do is set the scan_limit higher ``max7219.Display(spi, ss, scan_limit=15)`` or ``max7219.set_scan_limit(15)`` then it should just work... I hope
+I have not tested using daisy chained MAX7219, but I think all you will need
+to do is set the scan_limit higher ``max7219.Display(spi, ss, scan_limit=15)``
+or ``max7219.set_scan_limit(15)`` then it should just work... I hope...
 
 
-Example of use:
+Example of use (see `debug_max7219.py <examples/debug_max7219.py>` for more):
 
 .. code:: python
 
@@ -83,8 +87,8 @@ Example of use:
    display.write_digits(5926,7)
    sleep(3)
 
-   # Clear the display
-   display.write_digits('        ')
+   # Clear the display, notice this is write_all_digits, not write_digits
+   display.write_all_digits('')
    sleep(3)
 
    # Alter digits 2 through 6

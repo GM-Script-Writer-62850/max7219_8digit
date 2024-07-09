@@ -8,7 +8,6 @@ def start():
   display = max7219.Display(spi, ss, intensity=0)
 
   while True:
-
     print("Turn on ALL LEDs")
     display.write_digits("8.8.8.8.8.8.8.8.")
     sleep(3)
@@ -16,25 +15,41 @@ def start():
     print('\nShow 12345678 (as string)')
     display.write_digits('12345678')
     sleep(3)
-    
+
     print('\nReverse above (as string)')
-    display.r_write_digits('12345678')
+    display.write_digits_reverse('12345678')
     sleep(3)
 
-    print('\nShow 12345678 (as array)')
-    display.write_digits_from_array([1,2,3,4,5,6,7,8])
+    print("\nShow only 3.14")
+    display.write_all_digits('3.14')
+    sleep(3)
+    
+    print("\nReverse above")
+    display.write_all_digits('3.14',1)
+    sleep(3)
+    
+    print("\nwrite_all_digits (as list)")
+    display.write_all_digits([4,2,0,6,9])
+    sleep(3)
+    
+    print("\nReverse above")
+    display.write_all_digits([4,2,0,6,9],1)
     sleep(3)
 
-    print("\nReverse above (array)")
-    display.r_write_digits_from_array([1,2,3,4,5,6,7,8])
+    print('\nShow 12345678 (as list)')
+    display.write_digits_from_list([1,2,3,4,5,6,7,8])
     sleep(3)
 
-    print("\nBlank display")
-    display.write_digits('        ')
+    print("\nReverse above (list)")
+    display.write_digits_reverse([1,2,3,4,5,6,7,8])
+    sleep(3)
+
+    print("\nBlank display (write_all_digits)")
+    display.write_all_digits('')
     sleep(3)
 
     print("\nSet middle 2 digits to 1.2")
-    display.write_digits_from_array([11,2],4)
+    display.write_digits_from_list([11,2],4)
     sleep(3)
 
     print("\nTest number too long (string)")
@@ -42,15 +57,15 @@ def start():
     sleep(3)
 
     print("\nReverse test number too long (string)")
-    display.r_write_digits('3.14159265359')
+    display.write_digits_reverse('3.14159265359')
     sleep(3)
 
-    print("\nTest number too long (array)")
-    display.write_digits_from_array([3,11,4,1,5,9,2,6,5,3,5,9])
+    print("\nTest number too long (list)")
+    display.write_digits_from_list([3,11,4,1,5,9,2,6,5,3,5,9])
     sleep(3)
 
-    print("\nReverse test number too long (array)")
-    display.r_write_digits_from_array([3,11,4,1,5,9,2,6,5,3,5,9])
+    print("\nReverse test number too long (list)")
+    display.write_digits_reverse([3,11,4,1,5,9,2,6,5,3,5,9])
     sleep(3)
 
     print("Demo setting parts of the display separately, non-destructively")

@@ -66,7 +66,7 @@ class Display:
             l=int(l)
             if 0 <= l <= self.scan_limit:
                 return l
-            raise Exception(f"Last digit position is out of range, must be 0 - {self.scan_limit}")
+            raise Exception(f"Digit position is out of range, must be 0 - {self.scan_limit}")
 
     def write_digits(self, s, l=None):
         # s is the value to show
@@ -95,15 +95,7 @@ class Display:
         for i in buffer:
             self.set_register(*i)
 
-    def r_write_digits(self, value, start=0):
-        # value is the data to show
-        # start is the 1st digit's position
-
-        #value=str(value)[::-1]# This is not implemented in micropython for strings
-        value=''.join(reversed(value))# performance penalty
-        self.write_digits(value, self.scan_limit-start)
-
-    def write_digits_from_array(self, a, l=None):
+    def write_digits_from_list(self, a, l=None):
         # a is a array of integers to show (add 10 to apply a decimal point)
         # l is the last digit to show, starts at 0
         buffer=[]
@@ -124,10 +116,37 @@ class Display:
         for i in buffer:
             self.set_register(*i)
 
-    def r_write_digits_from_array(self, value, start=0):
-        # value is the data to show
+    def write_digits_reverse(self, val, start=0):
+        # val is the data to show
         # start is the 1st digit's position
-        self.write_digits_from_array(value[::-1], self.scan_limit-start)
+        if isinstance(val,list):
+            self.write_digits_from_list(val[::-1], self.scan_limit-start)
+        else:
+            val=''.join(reversed(val))# Performance penalty!
+            #val=str(val)[::-1]# This is not implemented in micropython for strings
+            self.write_digits(val, self.scan_limit-start)
+
+    def write_all_digits(self, val, flip=0):
+        # val is the data to show, will be padded on the left
+        # flip is a boolean, set to True/1 to reverse the order
+        if isinstance(val,list):
+           while len(val) <= self.scan_limit:
+              val.insert(0,0)
+           if not flip:
+              return self.write_digits_from_list(val)
+           self.write_digits_reverse(val)
+        else:
+           # Note: https://github.com/micropython/micropython/commit/ad3abcd324cd841ffddd5d8c2713345eed15f5fd
+           val=str(val)
+           l=self.scan_limit+val.count(".")+1
+           if flip:
+               # Reversing before padding is not as slow
+               val=''.join(reversed(val))# Performance penalty!
+               just=f"%-{l}s" # ljust
+           else:
+               just=f"% {l}s" # rjust
+           val=just % val # apply just
+           self.write_digits(val)
 
     def set_intensity(self, i):
         self.intensity = i
