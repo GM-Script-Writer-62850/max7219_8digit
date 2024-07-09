@@ -46,7 +46,7 @@ to do is set the scan_limit higher ``max7219.Display(spi, ss, scan_limit=15)``
 or ``max7219.set_scan_limit(15)`` then it should just work... I hope...
 
 
-Example of use (see `debug_max7219.py <examples/debug_max7219.py>` for more):
+Example of use (see `debug_max7219.py <examples/debug_max7219.py>`_ for more):
 
 .. code:: python
 
