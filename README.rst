@@ -9,16 +9,25 @@ I have tested it with a PICO, running micropython version 1.20.0.
 
 Requires a minimum of three spare GPIO lines to run SPI.
 
+Manual for ``Display``:
+  This is for setting up the max7219 IC for use, it takes up to 4 parameters
+  The 1st is the SPI connection, the 2ed is the cable select pin.
+  The 3ed is optional and is the brightness/intensity, this can be 0-15,
+  this defaults to 3, set this with ``intensity=15``
+  The 4th is optional and is the number of digits in the display,
+  defaults to 7 (digits 0-7), set this with ``scan_limit=15``, this 
+  value should be ``8 * [number of daisy chained MAX7219s] - 1``
+
 Manual for ``write_digits``:
-  This takes 2 parameters, the 1st is the value to set and the second
-  is the last digit's position you want to update, counting from 0.
+  This takes 2 parameters, the 1st is the value to set and the optional 
+  second is the last digit's position you want to update, counting from 0.
   This defaults to 7, the last digit using on the pin out of the MAX7219.
   This function accepts the 1st parameter as a string or number
 
 Manual for ``write_digits_from_list``:
   This function is exclusively for setting numbers as fast as possible.
-  This takes 2 parameters, the 1st is the value to set and the second
-  is the last digit you want to update, counting from 0.
+  This takes 2 parameters, the 1st is the value to set and the optional 
+  second is the last digit you want to update, counting from 0.
   This defaults to 7, the last digit using on the pin out of the MAX7219.
   This function accepts the 1st parameter as a list.
   Using 0-9 in the array will set the digit to the number given.
@@ -27,13 +36,13 @@ Manual for ``write_digits_from_list``:
 Manual for ``write_digits_reverse``:
   This takes 2 parameters, the 1st is the value to set, this
   can be a number, string, or list.
-  The second is the start position (defaults to 0)
+  The second is the optional start position (defaults to 0)
   This has a performance hit when the data type is not a list!
   See source code for more info.
 
 Manual for ``write_all_digits``:
   This takes 2 parameters, the 1st is the value to set (number, string, or list)
-  and the second is a boolean indicting if the order needs to be reversed,
+  and the optional second is a boolean indicting if the order needs to be reversed,
   defaults to False. This will pad values to the left with 0 for a list or space
   otherwise. For example with a list of ``[13,1,4]`` would become ``[0,0,0,0,0,13,1,4]``
   and a string ``12345`` would become ``   12345``, this is decimal point safe.
@@ -60,13 +69,13 @@ Example of use (see `debug_max7219.py <examples/debug_max7219.py>`_ for more):
    import max7219
    
    spi = SPI(0, baudrate=10000000, polarity=1, phase=0, sck=Pin(2), mosi=Pin(3))
-   ss = Pin(5, Pin.OUT)
+   cs = Pin(5, Pin.OUT)
    
    # Configure display
    # Brightness of display are 0 - 15, default is 3
    # 0 is dim and 15 is bright
-   display = max7219.Display(spi, ss)
-   #display = max7219.Display(spi, ss, intensity=0)
+   display = max7219.Display(spi, cs)
+   #display = max7219.Display(spi, cs, intensity=0)
 
    # Change brightness
    #display.set_intensity(2)
