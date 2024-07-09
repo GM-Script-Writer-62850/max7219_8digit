@@ -96,4 +96,4 @@ Example of use (see `debug_max7219.py <examples/debug_max7219.py>`_ for more):
    sleep(3)
 
    # Display Pi without using string processing
-   display.write_digits_from_array([13,1,4,5,9,2,6,5])
+   display.write_digits_from_list([13,1,4,5,9,2,6,5])
