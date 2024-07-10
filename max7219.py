@@ -18,7 +18,14 @@ CHAR_MAP = {
     'Q': 0x73, 'R': 0x05, 'S': 0x5b, 'T': 0x0f,
     'U': 0x1c, 'V': 0x3e, 'W': 0x2a, 'X': 0x37,
     'Y': 0x3b, 'Z': 0x6d, ' ': 0x00, '-': 0x01,
-    '\xb0': 0x63, '.': 0x80
+    '\xb0': 0x63, '.': 0x80, '_': 0x08
+}
+
+SEG_MAP = {
+    'A': 0x40, 'B': 0x20, 'C': 0x10, 'D': 0x08,
+    'E': 0x04, 'F': 0x02, 'G': 0x01, '.': 0x80,
+    'a': 0x40, 'b': 0x20, 'c': 0x10, 'd': 0x08,
+    'e': 0x04, 'g': 0x02, 'g': 0x01
 }
 
 INT_MAP = [
@@ -115,6 +122,39 @@ class Display:
                 print(a,'\nhas',i,'digits too many to display...')
         for i in buffer:
             self.set_register(*i)
+
+    def write_digits_from_list(self, a, l=None):
+        # a is a array of integers to show (add 10 to apply a decimal point)
+        # l is the last digit to show, starts at 0
+        buffer=[]
+        i=len(a)
+        l=self.valid_length(l)
+
+        while i > 0 and l > -1:
+            i -= 1
+            if a[i] > 9:
+                digit = INT_MAP[a[i]-10] | 0x80
+            else:
+                digit = INT_MAP[a[i]]
+            buffer.append([REG_DIGIT_BASE + l, digit])
+            l -= 1
+        else:
+            if i > 0:
+                print(a,'\nhas',i,'digits too many to display...')
+        for i in buffer:
+            self.set_register(*i)
+
+    def write_digit_segments(self, val, digit):
+        # val is a list of segments eg: ['A','C','.'], this can a empty list
+        # digit is the digit you want to write to
+        buffer=[]
+        total=0
+        if 0 <= digit <= self.scan_limit:
+            for i in val:
+                total+=SEG_MAP[i]
+            self.set_register(REG_DIGIT_BASE + digit, total)
+        else:
+            raise Exception(f"Digit position is out of range, must be 0 - {self.scan_limit}")
 
     def write_digits_reverse(self, val, start=0):
         # val is the data to show

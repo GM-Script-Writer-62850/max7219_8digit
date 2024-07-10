@@ -47,6 +47,12 @@ Manual for ``write_all_digits``:
   otherwise. For example with a list of ``[13,1,4]`` would become ``[0,0,0,0,0,13,1,4]``
   and a string ``12345`` would become ``   12345``, this is decimal point safe.
 
+Manual for ``write_digit_segments``:
+  This takes 2 parameters, the 1st is a list of segments (``['A','b','.']``)
+  this list can be empty to blank the digit.
+  The second parameter is the digit to be set.
+  This is the function you would use for a LED matrix display panel
+
 In Theory using a last digit value of 15 would start at the end of the second
 MAX7219 connected to the DOUT pin of the 1st MAX7219
 
@@ -106,3 +112,11 @@ Example of use (see `debug_max7219.py <examples/debug_max7219.py>`_ for more):
 
    # Display Pi without using string processing
    display.write_digits_from_list([13,1,4,5,9,2,6,5])
+   sleep(3)
+
+   # Turn on all segments of digit 0
+   display.write_digit_segments(['A','b','C','D','E','F','g','.'],0)
+   sleep(3)
+
+   # Turn off all segments of digit 0
+   display.write_digit_segments([],0)
