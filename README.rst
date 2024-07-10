@@ -52,6 +52,7 @@ Manual for ``write_digit_segments``:
   this list can be empty to blank the digit.
   The second parameter is the digit to be set.
   This is the function you would use for a LED matrix display panel
+  See `led_test.py <examples/led_test.py>`_ for example code.
 
 In Theory using a last digit value of 15 would start at the end of the second
 MAX7219 connected to the DOUT pin of the 1st MAX7219
