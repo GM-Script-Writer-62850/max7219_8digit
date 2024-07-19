@@ -186,5 +186,5 @@ class Display:
         if not il:
             return int(round(val,0))
         elif il < 0:
-            return str(val)[:l]
+            return int(str(val)[:l])
         return round(val,il)
