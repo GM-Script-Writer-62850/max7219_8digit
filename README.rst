@@ -54,6 +54,25 @@ Manual for ``write_digit_segments``:
   This is the function you would use for a LED matrix display panel.
   See `led_test.py <examples/led_test.py>`_ for example code.
 
+Manual for ``round_to_fit_length``:
+  This takes 2 parameters, the 1st is a number.
+  The second optional parameter is the max length of the number (defaults to 8)
+  This will round or truncate the number to make it fit in the length given.
+  This value is returned as a ``int`` or ``float`` number.
+
+  **THIS DOES NOT SET ANYTHING TO THE MAX7219**
+
+  Examples:
+    * ``round_to_fit_length(3.14159265359, 6)`` = 3.14159
+    * ``round_to_fit_length(3.14159265359, 5)`` = 3.1416
+    * ``round_to_fit_length(42069, 3)`` = 420
+    * ``round_to_fit_length(42069, 12)`` = 42069
+    * ``round_to_fit_length(21.457264, 2)`` = 21
+    * ``round_to_fit_length(21.457264, 4)`` = 21.46
+    * ``round_to_fit_length(21.99, 2)`` = 22
+
+----
+
 In Theory using a last digit value of 15 would start at the end of the second
 MAX7219 connected to the DOUT pin of the 1st MAX7219
 
