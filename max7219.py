@@ -176,3 +176,15 @@ class Display:
     def set_scan_limit(self, l):
         self.scan_limit = l
         self.set_register(REG_SCAN_LIMIT, self.scan_limit)
+
+    def round_to_fit_length(self, val, l=0):
+        # val is a number
+        # l is the desired max length
+        if not l:
+            l=self.scan_limit+1
+        il=l-len(str(int(val)))
+        if not il:
+            return int(round(val,0))
+        elif il < 0:
+            return str(val)[:l]
+        return round(val,il)
