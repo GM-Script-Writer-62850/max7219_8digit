@@ -123,30 +123,9 @@ class Display:
         for i in buffer:
             self.set_register(*i)
 
-    def write_digits_from_list(self, a, l=None):
-        # a is a array of integers to show (add 10 to apply a decimal point)
-        # l is the last digit to show, starts at 0
-        buffer=[]
-        i=len(a)
-        l=self.valid_length(l)
-
-        while i > 0 and l > -1:
-            i -= 1
-            if a[i] > 9:
-                digit = INT_MAP[a[i]-10] | 0x80
-            else:
-                digit = INT_MAP[a[i]]
-            buffer.append([REG_DIGIT_BASE + l, digit])
-            l -= 1
-        else:
-            if i > 0:
-                print(a,'\nhas',i,'digits too many to display...')
-        for i in buffer:
-            self.set_register(*i)
-
     def write_digit_segments(self, val, digit):
-        # val is a list of segments eg: ['A','C','.'], this can a empty list
-        # digit is the digit you want to write to
+        # val is a list of segments eg: ['A','c','.'], this can a empty list
+        # digit is the digit's position you want to write to
         buffer=[]
         total=0
         if 0 <= digit <= self.scan_limit:
@@ -162,8 +141,8 @@ class Display:
         if isinstance(val,list):
             self.write_digits_from_list(val[::-1], self.scan_limit-start)
         else:
-            val=''.join(reversed(val))# Performance penalty!
-            #val=str(val)[::-1]# This is not implemented in micropython for strings
+            val=''.join(reversed(val)) # Performance penalty!
+            #val=str(val)[::-1] # This is not implemented in micropython for strings
             self.write_digits(val, self.scan_limit-start)
 
     def write_all_digits(self, val, flip=0):
@@ -178,10 +157,12 @@ class Display:
         else:
            # Note: https://github.com/micropython/micropython/commit/ad3abcd324cd841ffddd5d8c2713345eed15f5fd
            val=str(val)
-           l=self.scan_limit+val.count(".")+1
+           l=self.scan_limit+1
+           l+=val.count(".")
+           l+=val.count("\xb0") # This counts at 2 characters
            if flip:
                # Reversing before padding is not as slow
-               val=''.join(reversed(val))# Performance penalty!
+               val=''.join(reversed(val)) # Performance penalty!
                just=f"%-{l}s" # ljust
            else:
                just=f"% {l}s" # rjust
