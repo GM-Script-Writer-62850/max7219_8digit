@@ -1,5 +1,13 @@
 # Licence: GPLv3
 # Copyright 2017 Paul Dwerryhouse <paul@dwerryhouse.com.au>
+try:
+    from _thread import allocate_lock
+except:
+    class allocate_lock:
+        def acquire():
+            return
+        def release():
+            return
 
 CHAR_MAP = {
     '0': 0x7e, '1': 0x30, '2': 0x6d, '3': 0x79,
@@ -44,6 +52,7 @@ REG_DISPLAY_TEST    = 0x0f
 class Display:
 
     def __init__(self, spi, cs, intensity=3, scan_limit=7):
+        self.lock = allocate_lock()
         self.spi = spi
         self.cs = cs
         self.intensity = intensity
@@ -58,9 +67,11 @@ class Display:
         self.set_register(REG_SHUTDOWN, 1)
 
     def set_register(self, register, value):
+        self.lock.acquire()
         self.cs.off()
         self.spi.write(bytearray([register, value]))
         self.cs.on()
+        self.lock.release()
 
     def decode_char(self, c):
         d = CHAR_MAP.get(c)
